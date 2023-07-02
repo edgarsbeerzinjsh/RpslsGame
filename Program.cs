@@ -20,12 +20,21 @@ namespace RpslsGame
             PlayerB,
         }
 
+        private enum OpponentNames
+        {
+            Spock,
+            Rock,
+            Lizard,
+        }
+
         static void Main(string[] args)
         {
             var gameLength = 3;
             var yourWins = 0; 
             var computerWins = 0;
             var currentRound = 1;
+            var didWinRound = true;
+            var opponentNr = 0;
             var random = new Random();
             Array gameTurnOptions = Enum.GetValues(typeof(TurnOptions));
 
@@ -34,68 +43,105 @@ namespace RpslsGame
                               "ROCK, PAPER, SCISSORS, LIZARD, SPOCK\n");
             Console.WriteLine("Game consists of three winning rounds and winner is player " +
                               "with most wins!\nGood luck!");
+            Console.WriteLine("To be champion you must win against three opponents!");
 
             do
             {
-                Console.WriteLine($"\nRound {currentRound}");
-                Console.WriteLine("Choose your option:\n");
+                Console.WriteLine($"\nYour {opponentNr + 1}. opponent is {(OpponentNames)opponentNr}");
+                NewGame();
+                OneOpponentGame();
 
-                foreach (var turnOption in gameTurnOptions)
+                opponentNr++;
+            } while (didWinRound && opponentNr < 3);
+
+            if (didWinRound == true)
+            {
+                Console.WriteLine("Congratulations you are champion!");
+            }
+
+            Console.ReadLine();
+
+            void NewGame()
+            {
+                yourWins = 0;
+                computerWins = 0;
+                currentRound = 1;
+            }
+            void OneOpponentGame()
+            {
+                OpponentNames currentOpponent = (OpponentNames)opponentNr;
+                var opponentName = currentOpponent.ToString();
+
+                do
                 {
-                    var firstTwoLetters = FirstTwoLettersOfTurnOption((TurnOptions)turnOption);
+                    Console.WriteLine($"\nGame {opponentNr + 1}, Round {currentRound}");
+                    Console.WriteLine("Choose your option:\n");
 
-                    Console.WriteLine($"{turnOption} ({turnOption} / {firstTwoLetters} / {(int)turnOption})");
-                }
+                    foreach (var turnOption in gameTurnOptions)
+                    {
+                        var firstTwoLetters = FirstTwoLettersOfTurnOption((TurnOptions)turnOption);
 
-                if (currentRound == 1)
+                        Console.WriteLine($"{turnOption} ({turnOption} / {firstTwoLetters} / {(int)turnOption})");
+                    }
+
+                    if (currentRound == 1)
+                    {
+                        Console.WriteLine("\nOnly in first round you also have option" +
+                                          "\nto exit game: exit / ex");
+                    }
+
+                    var playerTurnOption = ReadPlayerTurnOption(currentRound);
+
+                    if (playerTurnOption == null)
+                    {
+                        Console.WriteLine("\nOoh, maybe another time.");
+                        Environment.Exit(0);
+                    }
+
+                    Console.WriteLine($"You chose: {playerTurnOption}");
+
+                    var computerTurnOption = TurnOptions.Rock;
+                    //var computerTurnOption = (TurnOptions)random.Next(gameTurnOptions.Length);
+                    Console.WriteLine($"{opponentName} chose: {computerTurnOption}");
+
+                    var roundWinner = TurnWinner((TurnOptions)playerTurnOption, computerTurnOption);
+
+                    if (roundWinner == RoundResult.Draw)
+                    {
+                        Console.WriteLine("\nBoth players chose the same option: It is a draw!" +
+                                          "\nPlay this round again!");
+                        continue;
+                    }
+                    else if (roundWinner == RoundResult.PlayerA)
+                    {
+                        Console.WriteLine($"\n{playerTurnOption} wins against {computerTurnOption}!" +
+                                          $"\nYou win this round!");
+                        yourWins++;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\n{computerTurnOption} wins against {playerTurnOption}!" +
+                                          $"\n{opponentName} wins this round!");
+                        computerWins++;
+                    }
+                    
+                    currentRound++;
+                    Console.WriteLine($"\nYour wins: {yourWins}\n" +
+                                      $"{opponentName} wins: {computerWins}");
+
+                } while (currentRound <= gameLength);
+
+                if (yourWins > computerWins)
                 {
-                    Console.WriteLine("\nOnly in first round you also have option" +
-                                      "\nto exit game: exit / ex");
-                }
-
-                var playerTurnOption = ReadPlayerTurnOption(currentRound);
-
-                if (playerTurnOption == null)
-                {
-                    Console.WriteLine("\nOoh, maybe another time.");
-                    Environment.Exit(0);
-                }
-
-                Console.WriteLine($"You chose: {playerTurnOption}");
-
-                //var computerTurnOption = TurnOptions.Rock;
-                var computerTurnOption = (TurnOptions)random.Next(gameTurnOptions.Length);
-                Console.WriteLine($"Computer chose: {computerTurnOption}");
-
-                var roundWinner = TurnWinner((TurnOptions)playerTurnOption, computerTurnOption);
-
-                if (roundWinner == RoundResult.Draw)
-                {
-                    Console.WriteLine("\nBoth players chose the same option: It is a draw!" +
-                                      "\nPlay this round again!");
-                    continue;
-                }
-                else if (roundWinner == RoundResult.PlayerA)
-                {
-                    Console.WriteLine($"\n{playerTurnOption} wins against {computerTurnOption}!" +
-                                      $"\nPlayer wins this round!");
-                    yourWins++;
+                    Console.WriteLine($"You won {opponentNr + 1}. game!");
                 }
                 else
                 {
-                    Console.WriteLine($"\n{computerTurnOption} wins against {playerTurnOption}!" +
-                                      $"\nComputer wins this round!");
-                    computerWins++;
+                    Console.WriteLine($"{opponentName} won this game!\n" +
+                                      $"You lost all tournament!");
+                    didWinRound = false;
                 }
-                
-                currentRound++;
-                Console.WriteLine($"\nYour wins: {yourWins}\n" +
-                                  $"Computer wins: {computerWins}");
-
-            } while (currentRound <= gameLength);
-
-            Console.WriteLine($"Winner is {(yourWins > computerWins ? "You!" : "Computer!")}");
-            Console.ReadLine();
+            }
 
             TurnOptions? ReadPlayerTurnOption(int round)
             {
