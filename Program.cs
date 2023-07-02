@@ -95,6 +95,7 @@ namespace RpslsGame
             } while (currentRound <= gameLength);
 
             Console.WriteLine($"Winner is {(yourWins > computerWins ? "You!" : "Computer!")}");
+            Console.ReadLine();
 
             TurnOptions? ReadPlayerTurnOption(int round)
             {
