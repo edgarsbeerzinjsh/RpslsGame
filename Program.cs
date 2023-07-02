@@ -63,8 +63,8 @@ namespace RpslsGame
 
                 Console.WriteLine($"You chose: {playerTurnOption}");
 
-                var computerTurnOption = TurnOptions.Rock;
-                //var computerTurnOption = (TurnOptions)random.Next(gameTurnOptions.Length);
+                //var computerTurnOption = TurnOptions.Rock;
+                var computerTurnOption = (TurnOptions)random.Next(gameTurnOptions.Length);
                 Console.WriteLine($"Computer chose: {computerTurnOption}");
 
                 var roundWinner = TurnWinner((TurnOptions)playerTurnOption, computerTurnOption);
