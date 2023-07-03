@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using RpslsGame.HelperFunctions;
+using RpslsGame.Players;
 
 namespace RpslsGame
 {
@@ -30,10 +31,9 @@ namespace RpslsGame
         static void Main(string[] args)
         {
             var gameLength = 3;
-            var yourWins = 0; 
-            var computerWins = 0;
+            var you = new HumanPlayer("You");
+            var computer = new AIPlayer("Computer");
             var currentRound = 1;
-            var didWinRound = true;
             var opponentNr = 0;
             var random = new Random();
             Array gameTurnOptions = Enum.GetValues(typeof(TurnOptions));
@@ -52,9 +52,9 @@ namespace RpslsGame
                 OneOpponentGame();
 
                 opponentNr++;
-            } while (didWinRound && opponentNr < 3);
+            } while (opponentNr < 3);
 
-            if (didWinRound == true)
+            if (you.MatchWins > computer.MatchWins)
             {
                 Console.WriteLine("Congratulations you are champion!");
             }
@@ -63,8 +63,8 @@ namespace RpslsGame
 
             void NewGame()
             {
-                yourWins = 0;
-                computerWins = 0;
+                you.RoundWins = 0;
+                computer.RoundWins = 0;
                 currentRound = 1;
             }
             void OneOpponentGame()
@@ -75,33 +75,12 @@ namespace RpslsGame
                 do
                 {
                     Console.WriteLine($"\nGame {opponentNr + 1}, Round {currentRound}");
-                    Console.WriteLine("Choose your option:\n");
 
-                    foreach (var turnOption in gameTurnOptions)
-                    {
-                        var firstTwoLetters = FirstTwoLettersOfTurnOption((TurnOptions)turnOption);
-
-                        Console.WriteLine($"{turnOption} ({turnOption} / {firstTwoLetters} / {(int)turnOption})");
-                    }
-
-                    if (currentRound == 1)
-                    {
-                        Console.WriteLine("\nOnly in first round you also have option" +
-                                          "\nto exit game: exit / ex");
-                    }
-
-                    var playerTurnOption = ReadPlayerTurnOption(currentRound);
-
-                    if (playerTurnOption == null)
-                    {
-                        Console.WriteLine("\nOoh, maybe another time.");
-                        Environment.Exit(0);
-                    }
-
+                    var playerTurnOption = you.MakeTurnDecision<TurnOptions>();
                     Console.WriteLine($"You chose: {playerTurnOption}");
 
                     //var computerTurnOption = TurnOptions.Rock;
-                    var computerTurnOption = (TurnOptions)random.Next(gameTurnOptions.Length);
+                    var computerTurnOption = computer.MakeTurnDecision<TurnOptions>();
                     Console.WriteLine($"{opponentName} chose: {computerTurnOption}");
 
                     var roundWinner = TurnWinner((TurnOptions)playerTurnOption, computerTurnOption);
@@ -116,108 +95,34 @@ namespace RpslsGame
                     {
                         Console.WriteLine($"\n{playerTurnOption} wins against {computerTurnOption}!" +
                                           $"\nYou win this round!");
-                        yourWins++;
+                        you.WinRound();
                     }
                     else
                     {
                         Console.WriteLine($"\n{computerTurnOption} wins against {playerTurnOption}!" +
                                           $"\n{opponentName} wins this round!");
-                        computerWins++;
+                        computer.WinRound();
                     }
                     
                     currentRound++;
-                    Console.WriteLine($"\nYour wins: {yourWins}\n" +
-                                      $"{opponentName} wins: {computerWins}");
+                    Console.WriteLine($"\nYour wins: {you.RoundWins}\n" +
+                                      $"{opponentName} wins: {computer.RoundWins}");
 
                 } while (currentRound <= gameLength);
 
-                if (yourWins > computerWins)
+                var matchWinner = you.Name;
+                if (you.RoundWins > computer.RoundWins)
                 {
-                    Console.WriteLine($"You won {opponentNr + 1}. game!");
+                    you.WinMatch();
                 }
                 else
                 {
-                    Console.WriteLine($"{opponentName} won this game!\n" +
-                                      $"You lost all tournament!");
-                    didWinRound = false;
-                }
-            }
-
-            TurnOptions? ReadPlayerTurnOption(int round)
-            {
-                var isValidOption = false;
-                TurnOptions? playerOption = null;
-
-                do
-                {
-                    var playerInput = Console.ReadLine().Trim().ToLower();
-                    var inputTwoCharOption = EnumNameFromFirstTwoLettersCoversation(playerInput);
-                    if (inputTwoCharOption != null)
-                    {
-                        playerInput = inputTwoCharOption;
-                    }
-
-                    if (IsPlayerInputNumber(playerInput))
-                    {
-                        playerInput = ValidPlayerInputNumber(playerInput);
-                    }
-
-                    var isPlayerOptionParsed = Enum.TryParse(playerInput, true, out TurnOptions playerParsedOption);
-                    if (isPlayerOptionParsed)
-                    {
-                        playerOption = playerParsedOption;
-                        isValidOption = true;
-                    }
-
-                    if ((playerInput == "exit" || playerInput == "ex") && round == 1)
-                    {
-                        isValidOption = true;
-                    }
-
-                    if (!isValidOption)
-                    {
-                        Console.WriteLine("That was not one of options ...");
-                    }
-                } while (!isValidOption);
-
-                return playerOption;
-            }
-
-
-            string EnumNameFromFirstTwoLettersCoversation(string firstTwoLetters)
-            {
-                foreach (var turnOption in gameTurnOptions)
-                {
-                    if (firstTwoLetters.ToLower() == FirstTwoLettersOfTurnOption((TurnOptions)turnOption))
-                    {
-                        return turnOption.ToString();
-                    }
+                    computer.WinMatch();
+                    matchWinner = computer.Name;
                 }
 
-                return null;
+                Console.WriteLine($"{matchWinner} won this match!");
             }
-
-            bool IsPlayerInputNumber(string playerInput)
-            {
-                return Int32.TryParse(playerInput, out _);
-            }
-
-            string ValidPlayerInputNumber(string playerInput)
-            {
-                if (Int32.TryParse(playerInput, out int playerInputNumber))
-                {
-                    if (playerInputNumber >= 0 && playerInputNumber < gameTurnOptions.Length)
-                    {
-                        return playerInput;
-                    }
-                };
-
-                return null;
-            }
-        }
-        private static string FirstTwoLettersOfTurnOption<T>(T turnOption) where T : Enum
-        {
-            return turnOption.ToString().Substring(0, 2).ToLower();
         }
 
         private static RoundResult TurnWinner(TurnOptions aOption, TurnOptions bOption)
