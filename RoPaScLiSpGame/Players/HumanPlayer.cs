@@ -4,11 +4,12 @@ namespace RpslsGame.Players
 {
     public class HumanPlayer : Player
     {
+        public int PlayedGames { get; set; } = 0;
         public HumanPlayer(string name) : base(name)
         {
         }
 
-        public T MakeTurnDecision<T>() where T : Enum
+        public override T MakeTurnDecision<T>()
         {
             var playerOption = HumanInteractionForInput<T>();
 
@@ -22,7 +23,7 @@ namespace RpslsGame.Players
             bool validEnumName = false;
 
             Console.WriteLine("Choose your option:");
-            Console.WriteLine("([exit] or [ex] to exit from game)");
+            Console.WriteLine("([exit] or [ex] to exit from game)\n");
 
             foreach (var turnOption in EnumConversions.EnumToArray<T>())
             {

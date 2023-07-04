@@ -2,19 +2,20 @@
 
 namespace RpslsGame.Players
 {
-    public class AIPlayer : Player
+    public class AiPlayer : Player
     {
-        private Random Random { get; set; } = new Random();
+        private Random Random { get; } = new Random();
 
-        public AIPlayer(string name) : base(name)
+        public AiPlayer(string name) : base(name)
         {
         }
 
-        public T MakeTurnDecision<T>() where T : Enum
+        public override T MakeTurnDecision<T>()
         {
-            Array enumValues = Enum.GetValues(typeof(T));
-            T firstValue =  (T)enumValues.GetValue(0);
-            return firstValue;
+            var enumValues = EnumConversions.EnumToArray<T>();
+            var randomValidNumber = Random.Next(enumValues.Length);
+
+            return (T)enumValues.GetValue(randomValidNumber);
         }
     }
 }

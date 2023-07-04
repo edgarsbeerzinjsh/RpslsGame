@@ -22,5 +22,7 @@
         {
             MatchWins++;
         }
+
+        public abstract T MakeTurnDecision<T>() where T : Enum;
     }
 }
