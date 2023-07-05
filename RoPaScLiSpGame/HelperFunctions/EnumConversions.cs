@@ -7,7 +7,7 @@
             return yourEnum.ToString().Substring(0, 2).ToLower();
         }
 
-        public static string EnumNameFromFirstTwoLetters<T>(string firstTwoLetters) where T : Enum
+        public static string? EnumNameFromFirstTwoLetters<T>(string firstTwoLetters) where T : Enum
         {
             foreach (var turnOption in EnumToArray<T>())
             {
@@ -33,7 +33,7 @@
             return false;
         }
 
-        public static string NumberToEnumName<T>(string number) where T : Enum
+        public static string? NumberToEnumName<T>(string number) where T : Enum
         {
             if (int.TryParse(number, out int result))
             {

@@ -6,11 +6,11 @@ namespace RpslsGame
 {
     public class RpslsGameSetup
     {
-        private int minOpponentCount = 1;
-        private int maxOpponentCount = 9;
-        private int minRoundCount = 1;
-        private int maxRoundCount = 5;
-        private List<string> nameArray = Enum.GetNames(typeof(OpponentNames)).ToList();
+        private const int MinOpponentCount = 1;
+        private const int MaxOpponentCount = 9;
+        private const int MinRoundCount = 1;
+        private const int MaxRoundCount = 5;
+        private readonly List<string> _nameArray = Enum.GetNames(typeof(OpponentNames)).ToList();
 
         public (List<Player> participantList, int rounds) GameSetup()
         {
@@ -18,18 +18,18 @@ namespace RpslsGame
                               "ROCK, PAPER, SCISSORS, LIZARD, SPOCK\n");
             Console.WriteLine("Tournament winner is player with most wins (tiebreaker round wins)\n");
             Console.WriteLine("Each player will play against each other.");
-            Console.WriteLine($"How many opponents do you want ({minOpponentCount}-{maxOpponentCount})?");
-            var opponents = GetValidCount(minOpponentCount, maxOpponentCount);
+            Console.WriteLine($"How many opponents do you want ({MinOpponentCount}-{MaxOpponentCount})?");
+            var opponents = GetValidCount(MinOpponentCount, MaxOpponentCount);
 
             var participantList = CreatePlayerList(opponents);
 
-            Console.WriteLine($"How many rounds in each match do you want to play({minRoundCount}-{maxRoundCount})?");
-            var rounds = GetValidCount(minRoundCount, maxRoundCount);
+            Console.WriteLine($"How many rounds in each match do you want to play({MinRoundCount}-{MaxRoundCount})?");
+            var rounds = GetValidCount(MinRoundCount, MaxRoundCount);
 
             return (participantList, rounds);
         }
 
-        private int GetValidCount(int min, int max)
+        private static int GetValidCount(int min, int max)
         {
             var isValidCount = false;
             string input;
@@ -69,7 +69,7 @@ namespace RpslsGame
 
             for (int i = 0; i < opponents; i++)
             {
-                playerList.Add(new AiPlayer(nameArray[i]));
+                playerList.Add(new AiPlayer(_nameArray[i]));
             }
 
             return playerList;
@@ -78,15 +78,15 @@ namespace RpslsGame
         private void ShuffleNameList()
         {
             var random = new Random();
-            var n = nameArray.Count;
+            var n = _nameArray.Count;
 
             while (n > 1)
             {
                 n--;
                 int oldValueIndex = random.Next(n + 1);
-                string value = nameArray[oldValueIndex];
-                nameArray[oldValueIndex] = nameArray[n];
-                nameArray[n] = value;
+                string value = _nameArray[oldValueIndex];
+                _nameArray[oldValueIndex] = _nameArray[n];
+                _nameArray[n] = value;
             }
         }
     }
