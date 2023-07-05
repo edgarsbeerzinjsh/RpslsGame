@@ -29,12 +29,12 @@ namespace RpslsGame.GameLogic
                 if (winner == playerA)
                 {
                     aWins++;
-                    playerA.RoundWins++;
+                    playerA.WinRound();
                 }
                 else
                 {
                     bWins++;
-                    playerB.RoundWins++;
+                    playerB.WinRound();
                 }
 
                 Console.WriteLine($"\nRound winner {winner.Name}!\n");
@@ -61,7 +61,7 @@ namespace RpslsGame.GameLogic
             }
 
             var matchWinner = aWins > bWins ? playerA : playerB;
-            matchWinner.MatchWins++;
+            matchWinner.WinMatch();
 
             Console.SetOut(standardOutput);
             Console.SetError(standardError);
