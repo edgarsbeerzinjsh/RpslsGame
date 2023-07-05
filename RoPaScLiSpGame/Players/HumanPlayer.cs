@@ -4,7 +4,6 @@ namespace RpslsGame.Players
 {
     public class HumanPlayer : Player
     {
-        public int PlayedGames { get; set; } = 0;
         public HumanPlayer(string name) : base(name)
         {
         }
@@ -13,15 +12,13 @@ namespace RpslsGame.Players
         {
             var playerOption = HumanInteractionForInput<T>();
 
-            T choiseEnum = (T)Enum.Parse(typeof(T), playerOption, true);
+            var choiceEnum = (T)Enum.Parse(typeof(T), playerOption!, true);
            
-            return choiseEnum;
+            return choiceEnum;
         }
 
-        private string HumanInteractionForInput<T>() where T : Enum
+        private string? HumanInteractionForInput<T>() where T : Enum
         {
-            bool validEnumName = false;
-
             Console.WriteLine("Choose your option:");
             Console.WriteLine("([exit] or [ex] to exit from game)\n");
 
@@ -37,11 +34,10 @@ namespace RpslsGame.Players
             return input;
         }
 
-        private string GetValidInput<T>() where T : Enum
+        private string? GetValidInput<T>() where T : Enum
         {
-            bool validEnumName = false;
-            var input = "";
-
+            var validEnumName = false;
+            string? input;
             do
             {
                 input = Console.ReadLine().Trim().ToLower();
@@ -65,7 +61,7 @@ namespace RpslsGame.Players
                 {
                     var numberInput = UserInputValidations
                         .NumberRangeValidation(input, 0, EnumConversions.EnumToArray<T>().Length - 1);
-                    input = EnumConversions.NumberToEnumName<T>(numberInput);
+                    input = EnumConversions.NumberToEnumName<T>(numberInput!);
 
                     if (input != null)
                     {

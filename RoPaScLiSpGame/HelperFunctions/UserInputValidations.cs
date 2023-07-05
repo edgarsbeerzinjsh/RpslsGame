@@ -7,7 +7,7 @@
             return int.TryParse(playerInput, out _);
         }
 
-        public static string NumberRangeValidation(string number, int min, int max)
+        public static string? NumberRangeValidation(string number, int min, int max)
         {
             if (int.TryParse(number, out var inputNumber))
             {
@@ -15,7 +15,7 @@
                 {
                     return number;
                 }
-            };
+            }
 
             return null;
         }

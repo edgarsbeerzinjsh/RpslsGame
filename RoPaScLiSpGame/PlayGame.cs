@@ -4,15 +4,14 @@ namespace RpslsGame
 {
     public class PlayGame
     {
-        private readonly RpslsGameSetup _setup;
         private readonly TournamentService _tournamentService;
 
         public PlayGame()
         {
-            _setup = new RpslsGameSetup();
-            var parameters = _setup.GameSetup();
+            var setup = new RpslsGameSetup();
+            var (participantList, rounds) = setup.GameSetup();
 
-            _tournamentService = new TournamentService(parameters.participantList, parameters.rounds);
+            _tournamentService = new TournamentService(participantList, rounds);
         }
 
         public void Start()

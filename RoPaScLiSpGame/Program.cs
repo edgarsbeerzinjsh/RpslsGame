@@ -1,6 +1,4 @@
-﻿using RpslsGame.GameLogic;
-
-namespace RpslsGame
+﻿namespace RpslsGame
 {
     internal class Program
     {
