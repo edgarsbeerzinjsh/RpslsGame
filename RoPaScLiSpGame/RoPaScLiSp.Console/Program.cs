@@ -1,4 +1,6 @@
-﻿namespace RpslsGame
+﻿using RoPaScLiSp.GameLogic;
+
+namespace RoPaScLiSp
 {
     internal class Program
     {

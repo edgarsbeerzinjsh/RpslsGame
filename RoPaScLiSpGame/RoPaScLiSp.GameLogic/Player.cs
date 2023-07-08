@@ -1,14 +1,16 @@
-﻿namespace RpslsGame.Players
+﻿namespace RoPaScLiSp.GameLogic
 {
-    public abstract class Player
+    public class Player
     {
         public string Name { get; set; }
+        public bool IsHuman { get; set; }
         public int RoundWins { get; set; }
         public int MatchWins { get; set; }
 
-        protected Player(string name)
+        public Player(string name, bool isHuman)
         {
             Name = name;
+            IsHuman = isHuman;
             RoundWins = 0;
             MatchWins = 0;
         }
@@ -22,7 +24,5 @@
         {
             MatchWins++;
         }
-
-        public abstract T MakeTurnDecision<T>() where T : Enum;
     }
 }

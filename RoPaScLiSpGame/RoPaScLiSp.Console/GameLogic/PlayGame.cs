@@ -1,6 +1,6 @@
-﻿using RpslsGame.GameLogic;
+﻿using RoPaScLiSp.Setup;
 
-namespace RpslsGame
+namespace RoPaScLiSp.GameLogic
 {
     public class PlayGame
     {
@@ -8,8 +8,8 @@ namespace RpslsGame
 
         public PlayGame()
         {
-            var setup = new RpslsGameSetup();
-            var (participantList, rounds) = setup.GameSetup();
+            var setup = new GameSetup();
+            var (participantList, rounds) = setup.NewGameSetup();
 
             _tournamentService = new TournamentService(participantList, rounds);
         }
