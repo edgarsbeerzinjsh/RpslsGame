@@ -1,7 +1,6 @@
 ﻿using ConsoleTables;
-using RpslsGame.Players;
 
-namespace RpslsGame.GameLogic
+namespace RoPaScLiSp.GameLogic
 {
     public class TournamentService
     {
@@ -23,7 +22,7 @@ namespace RpslsGame.GameLogic
                     MatchService.PlayMatch(_playerList[i], _playerList[j], _roundCount);
                 }
 
-                if (_playerList[i].GetType() == typeof(HumanPlayer))
+                if (_playerList[i].IsHuman)
                 {
                     Console.WriteLine($"All {_playerList[i].Name} matches played!");
                     Console.WriteLine("Press any key to continue.");
