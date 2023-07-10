@@ -25,7 +25,7 @@ namespace RoPaScLiSp.Setup
         private static int GetValidCount(int min, int max)
         {
             var isValidCount = false;
-            string input;
+            string? input;
 
             do
             {
@@ -46,7 +46,7 @@ namespace RoPaScLiSp.Setup
 
             } while (!isValidCount);
 
-            return int.Parse(input);
+            return input != null ? int.Parse(input) : -1;
         }
 
         private List<Player> CreatePlayerList(int opponents)
