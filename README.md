@@ -18,10 +18,10 @@ Spock vaporizes Rock.<br>
 
 ---
 
-## Level 3
 
-- You can pass number of computer players (from 1 up to 9)
-- You can pass number of rounds (from 1 up to 5)
-- Each player will play with each other player, computer vs computer too
-- Results for all players will be printed in table
-- Winner is player with most victories (in case of tie - player with most round victories)
+## Level 2
+
+- You have predefined 3 computer players
+- Each of them have name and it should be shown in play time
+- You play with each computer player three rounds
+- To become the winner, you need to defeat all of them

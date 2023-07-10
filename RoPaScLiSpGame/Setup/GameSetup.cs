@@ -1,5 +1,4 @@
 ﻿using RoPaScLiSp.GameLogic;
-using RoPaScLiSp.HelperFunctions;
 
 namespace RoPaScLiSp.Setup
 {
@@ -9,44 +8,11 @@ namespace RoPaScLiSp.Setup
         {
             Console.WriteLine("Hi, you are participating in championship of\n" +
                                      "ROCK, PAPER, SCISSORS, LIZARD, SPOCK\n");
-            Console.WriteLine("Tournament winner is player with most wins (tiebreaker round wins)\n");
-            Console.WriteLine("Each player will play against each other.");
-            Console.WriteLine($"How many opponents do you want ({GameConstants.MinOpponentCount}-{GameConstants.MaxOpponentCount})?");
-            var opponents = GetValidCount(GameConstants.MinOpponentCount, GameConstants.MaxOpponentCount);
+            Console.WriteLine("You can win Tournament if you win against all three opponents in best of three round matches\n\n");
 
-            var participantList = CreatePlayerList(opponents);
+            var participantList = CreatePlayerList(GameConstants.Opponents);
 
-            Console.WriteLine($"How many rounds in each match do you want to play({GameConstants.MinRoundCount}-{GameConstants.MaxRoundCount})?");
-            var rounds = GetValidCount(GameConstants.MinRoundCount, GameConstants.MaxRoundCount);
-
-            return (participantList, rounds);
-        }
-
-        private static int GetValidCount(int min, int max)
-        {
-            var isValidCount = false;
-            string? input;
-
-            do
-            {
-                input = Console.ReadLine();
-
-                if (int.TryParse(input, out var inputNumber))
-                {
-                    if (UserInputValidations.IsNumberInRangeValidation(inputNumber, min, max))
-                    {
-                        isValidCount = true;
-                    }
-                }
-
-                if (!isValidCount)
-                {
-                    Console.WriteLine($"\nInput must be number between {min} and {max}!");
-                }
-
-            } while (!isValidCount);
-
-            return input != null ? int.Parse(input) : -1;
+            return (participantList, GameConstants.Rounds);
         }
 
         private List<Player> CreatePlayerList(int opponents)
@@ -57,7 +23,6 @@ namespace RoPaScLiSp.Setup
             };
 
             var opponentNames = GameConstants.OpponentNameArray.ToList();
-            ShuffleNameList(opponentNames);
 
             for (var i = 0; i < opponents; i++)
             {
@@ -65,21 +30,6 @@ namespace RoPaScLiSp.Setup
             }
 
             return playerList;
-        }
-
-        private void ShuffleNameList(List<string> oldList)
-        {
-            var random = new Random();
-            var n = oldList.Count;
-
-            while (n > 1)
-            {
-                n--;
-                int oldValueIndex = random.Next(n + 1);
-                string value = oldList[oldValueIndex];
-                oldList[oldValueIndex] = oldList[n];
-                oldList[n] = value;
-            }
         }
     }
 }

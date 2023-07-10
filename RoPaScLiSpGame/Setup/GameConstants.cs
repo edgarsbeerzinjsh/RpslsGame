@@ -4,21 +4,13 @@
     {
         Rocky,
         Edward,
-        Spock,
-        Gecko,
-        Wolverine,
-        Godzilla,
-        Rock,
-        Luke,
-        Sherlock
+        Spock
     }
 
     public static class GameConstants
     {
-        public const int MinOpponentCount = 1;
-        public const int MaxOpponentCount = 9;
-        public const int MinRoundCount = 1;
-        public const int MaxRoundCount = 5;
+        public const int Opponents = 3;
+        public const int Rounds = 3;
         public static readonly List<string> OpponentNameArray = Enum.GetNames(typeof(OpponentNames)).ToList();
     }
 }
