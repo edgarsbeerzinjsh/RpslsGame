@@ -33,7 +33,7 @@ namespace RoPaScLiSp.GameLogic
         {
             var result = _playerList[0].MatchWins == _playerList.Count - 1
                 ? "Congratulations! You won!"
-                : "You lost! Your tournament is over!";
+                : "You lost!";
             
             Console.WriteLine(result);
         }

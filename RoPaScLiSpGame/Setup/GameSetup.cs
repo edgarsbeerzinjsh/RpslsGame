@@ -8,7 +8,7 @@ namespace RoPaScLiSp.Setup
         {
             Console.WriteLine("Hi, you are participating in championship of\n" +
                                      "ROCK, PAPER, SCISSORS, LIZARD, SPOCK\n");
-            Console.WriteLine("You can win Tournament if you win against all three opponents in best of three round matches\n\n");
+            Console.WriteLine("You play vs opponent three rounds. Winner is champion\n");
 
             var participantList = CreatePlayerList(GameConstants.Opponents);
 

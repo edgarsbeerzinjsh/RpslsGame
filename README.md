@@ -19,9 +19,8 @@ Spock vaporizes Rock.<br>
 ---
 
 
-## Level 2
+## Level 1
 
-- You have predefined 3 computer players
-- Each of them have name and it should be shown in play time
-- You play with each computer player three rounds
-- To become the winner, you need to defeat all of them
+- You play vs computer three rounds.
+- You type in your decision for each round
+- After three rounds, winner is player with more round wins
